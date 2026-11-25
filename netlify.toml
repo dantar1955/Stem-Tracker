@@ -1,0 +1,13 @@
+[build]
+  base = "app"
+  command = "npm run build"
+  publish = "app/dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Single-page app: let React Router handle all paths client-side.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
