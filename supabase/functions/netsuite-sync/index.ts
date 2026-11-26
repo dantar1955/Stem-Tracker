@@ -83,7 +83,7 @@ function pemToArrayBuffer(pem: string): ArrayBuffer {
 }
 
 async function signAssertion(accountId: string, clientId: string, certificateId: string, privateKeyPem: string): Promise<string> {
-  const tokenUrl = `https://${accountId.toLowerCase().replace(/_/g, "-")}.suitetalk.api.netsuite.com/services/rest/auth/oauth2/v1/token`;
+  const tokenUrl = `https://${accountId.toLowerCase().replace(/_/g, "-")}.app.netsuite.com/services/rest/auth/oauth2/v1/token`;
 
   const header = { alg: "PS256", typ: "JWT", kid: certificateId };
   const now = Math.floor(Date.now() / 1000);
@@ -124,7 +124,7 @@ async function getAccessToken(): Promise<{ accessToken: string; accountId: strin
   const certificateId = Deno.env.get("NETSUITE_CERTIFICATE_ID")!;
   const privateKey = Deno.env.get("NETSUITE_PRIVATE_KEY")!.replace(/\\n/g, "\n");
 
-  const tokenUrl = `https://${accountId.toLowerCase().replace(/_/g, "-")}.suitetalk.api.netsuite.com/services/rest/auth/oauth2/v1/token`;
+  const tokenUrl = `https://${accountId.toLowerCase().replace(/_/g, "-")}.app.netsuite.com/services/rest/auth/oauth2/v1/token`;
   const assertion = await signAssertion(accountId, clientId, certificateId, privateKey);
 
   const resp = await fetch(tokenUrl, {
