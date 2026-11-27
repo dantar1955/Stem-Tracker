@@ -131,6 +131,27 @@ the app can go live before NetSuite access is sorted out.
    never the service role key).
 3. Deploy. Every push to `main` redeploys automatically from then on.
 
+## Admin tools, pipeline, audit trail and knowledgebase
+
+Added after go-live (migrations `0004`–`0008`, Edge Functions `admin-users` and `admin-backup`):
+
+- **Admin tab** (admins only): create users with a temporary password, edit name/email/role, reset passwords, suspend and restore access (`supabase/functions/admin-users`). Users on a temporary password must choose their own at next sign-in. A suspended user's role stops counting immediately (`current_user_role()` ignores suspended users) and Supabase Auth blocks their sign-in.
+- **Audit trail** (`public.audit_log`): a trigger on every app table records inserts, updates (changed fields only, old → new) and deletes with the user who made them; NetSuite sync changes are labelled `netsuite_sync`, SQL Editor changes `database`. Sign-ins, sign-outs, password changes, imports and exports are logged through `log_app_event()`. Admins can read it; nobody can edit or delete it.
+- **Backup** (`supabase/functions/admin-backup`): downloads every table plus the user list (no passwords) as Excel and JSON.
+- **Pipeline tab** (`public.pipeline_entries`, `public.year_goals`): opportunities by stage, yearly goals, Excel template download/export/upload. Pipeline + Awaiting PO feed the dashboard's Total Projected. `record_weekly_snapshot()` runs every Monday via pg_cron.
+- **Knowledgebase tab**: quickstart guide and manual (`app/src/knowledgebase/*.md`) and the explainer video (`app/public/knowledgebase/`).
+
+Deploying these:
+
+```
+npx supabase functions deploy admin-users
+npx supabase functions deploy admin-backup
+```
+
+Then run `supabase/migrations/0008_pipeline_admin_audit.sql` in the SQL Editor. `invite-user` is no longer used by the app.
+
+Tests: `supabase/test/audit_pipeline_test.sql` (run after `functional_test.sql`) covers the audit trail, pipeline permissions, weekly snapshots and suspension.
+
 ## Local development
 
 ```

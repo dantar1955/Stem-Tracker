@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
+import { ChangePasswordPage } from '../pages/ChangePasswordPage'
 import type { AppRole } from '../types/database'
 
 export function ProtectedRoute({
@@ -11,7 +12,7 @@ export function ProtectedRoute({
   /** Restrict to specific roles; omit to allow any authenticated user. */
   allow?: AppRole[]
 }) {
-  const { user, role, loading } = useAuth()
+  const { user, role, loading, mustChangePassword } = useAuth()
 
   if (loading) {
     return <div className="p-8 text-slate-500">Loading…</div>
@@ -19,6 +20,10 @@ export function ProtectedRoute({
 
   if (!user) {
     return <Navigate to="/login" replace />
+  }
+
+  if (mustChangePassword) {
+    return <ChangePasswordPage />
   }
 
   if (allow && (!role || !allow.includes(role))) {

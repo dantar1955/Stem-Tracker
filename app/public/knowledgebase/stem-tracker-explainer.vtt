@@ -1,0 +1,172 @@
+WEBVTT
+
+00:00:00.450 --> 00:00:02.842
+Welcome to the STEM Production Tracker,
+
+00:00:02.842 --> 00:00:06.092
+the system that replaces the STEM Status spreadsheet.
+
+00:00:06.092 --> 00:00:11.121
+In the next three minutes, we'll walk through the dashboard, orders, the pipeline,
+
+00:00:11.121 --> 00:00:13.513
+the knowledgebase, and the admin tools.
+
+00:00:14.710 --> 00:00:16.648
+You sign in with your work email.
+
+00:00:16.648 --> 00:00:20.523
+The first time, your administrator gives you a temporary password,
+
+00:00:20.523 --> 00:00:24.046
+and the app asks you to choose your own before you continue.
+
+00:00:25.250 --> 00:00:27.296
+The dashboard opens first.
+
+00:00:27.296 --> 00:00:31.783
+It follows the same sections as the old 2026 Story sheet,
+
+00:00:31.783 --> 00:00:34.695
+but now every colour means one thing.
+
+00:00:34.695 --> 00:00:36.820
+Green is done, or money in.
+
+00:00:36.820 --> 00:00:38.395
+Blue is in progress.
+
+00:00:38.395 --> 00:00:39.890
+Amber needs action.
+
+00:00:39.890 --> 00:00:41.071
+Red is at risk.
+
+00:00:41.071 --> 00:00:44.219
+And purple is forecast, not yet on a PO.
+
+00:00:45.420 --> 00:00:47.885
+Section one shows how the year can land.
+
+00:00:47.885 --> 00:00:51.151
+Committed is everything shipped, plus orders on a PO.
+
+00:00:51.151 --> 00:00:54.603
+Pipeline and Awaiting PO come from the new Pipeline tab,
+
+00:00:54.603 --> 00:00:57.006
+and Total Projected adds them together.
+
+00:00:57.006 --> 00:01:00.704
+The bar underneath tracks progress against the revenue goal.
+
+00:01:01.900 --> 00:01:07.345
+Section two shows what's shipped, and the cash behind it: shipped, billed, paid,
+
+00:01:07.345 --> 00:01:08.298
+and collected.
+
+00:01:08.298 --> 00:01:12.178
+An amber card, like Shipped, Not Billed, is a to-do list.
+
+00:01:12.178 --> 00:01:14.628
+When it reaches zero, it turns grey.
+
+00:01:15.830 --> 00:01:19.358
+Section three covers orders on a PO that haven't shipped yet.
+
+00:01:19.358 --> 00:01:21.961
+Anything without a bill month shows in amber,
+
+00:01:21.961 --> 00:01:25.085
+and at-risk orders are kept out of the totals, in red.
+
+00:01:26.280 --> 00:01:30.661
+On the Orders tab, each row is coloured by where the order stands:
+
+00:01:30.661 --> 00:01:34.577
+green for shipped, blue when devices are still outstanding,
+
+00:01:34.577 --> 00:01:39.290
+yellow when it's scheduled or in build, and grey for next year's queue.
+
+00:01:39.290 --> 00:01:41.878
+Search by school or sales order number.
+
+00:01:41.878 --> 00:01:46.392
+Non-lab orders, like SnappyXO, appear when you tick Show All Orders.
+
+00:01:47.590 --> 00:01:49.370
+Click an order to open it.
+
+00:01:49.370 --> 00:01:52.861
+Order details come from NetSuite every ten minutes.
+
+00:01:52.861 --> 00:01:58.337
+Your team fills in the rest: device POs, ship and install dates, billing status,
+
+00:01:58.337 --> 00:01:59.022
+and notes.
+
+00:01:59.022 --> 00:02:03.129
+You can only change the fields your role is responsible for.
+
+00:02:04.330 --> 00:02:09.505
+The Pipeline tab is where Sales tracks opportunities that aren't on a PO yet.
+
+00:02:09.505 --> 00:02:14.883
+Each one has a stage, a likelihood, an estimated value, and an expected PO date.
+
+00:02:14.883 --> 00:02:17.638
+The year's revenue goal is set here, too.
+
+00:02:18.840 --> 00:02:23.637
+To enter many at once, download the Excel template, fill it in, and upload it.
+
+00:02:23.637 --> 00:02:28.434
+You'll see a preview of what will be added or updated before anything changes.
+
+00:02:28.434 --> 00:02:33.600
+Totals are saved every Monday, so the dashboard can show the change since last week.
+
+00:02:34.800 --> 00:02:39.171
+Everything is documented in the Knowledgebase: a quickstart guide,
+
+00:02:39.171 --> 00:02:41.952
+a full instruction manual, and this video.
+
+00:02:41.952 --> 00:02:45.065
+Each article can be printed, or saved as a PDF.
+
+00:02:46.260 --> 00:02:48.737
+Administrators also get an Admin tab.
+
+00:02:48.737 --> 00:02:53.958
+Here you can add users with a temporary password, edit their details and role,
+
+00:02:53.958 --> 00:02:57.372
+reset passwords, and suspend access with one click.
+
+00:02:58.570 --> 00:03:03.717
+The audit trail records everything: every change, with its old and new value,
+
+00:03:03.717 --> 00:03:08.597
+who made it, and when, plus sign-ins, user changes, and NetSuite updates.
+
+00:03:08.597 --> 00:03:10.936
+Entries can't be edited or deleted.
+
+00:03:12.140 --> 00:03:17.286
+And the backup page downloads a complete copy of the system, as an Excel workbook,
+
+00:03:17.286 --> 00:03:19.733
+and an exact JSON file for safekeeping.
+
+00:03:20.930 --> 00:03:22.032
+That's the tour.
+
+00:03:22.032 --> 00:03:26.649
+For more detail, open the Knowledgebase, or ask your administrator.
+
+00:03:26.649 --> 00:03:28.027
+Thanks for watching.

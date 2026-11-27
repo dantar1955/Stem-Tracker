@@ -5,12 +5,17 @@ import { roleLabel } from '../lib/permissions'
 const NAV_ITEMS = [
   { to: '/', label: 'Dashboard' },
   { to: '/orders', label: 'Orders' },
+  { to: '/pipeline', label: 'Pipeline' },
   { to: '/builds', label: 'Build Tracker' },
   { to: '/shortages', label: 'Shortages' },
   { to: '/device-shipments', label: 'Device Shipping' },
   { to: '/simulation', label: 'Simulation' },
   { to: '/reporting', label: 'Reporting' },
+  { to: '/knowledgebase', label: 'Knowledgebase' },
 ]
+
+// Only admins see (and can open) the Admin tab.
+const ADMIN_ITEM = { to: '/admin', label: 'Admin' }
 
 export function Layout() {
   const { user, role, signOut } = useAuth()
@@ -24,11 +29,6 @@ export function Layout() {
             <p className="text-xs text-slate-500">A+ Mobile Solutions</p>
           </div>
           <div className="flex items-center gap-4 text-sm">
-            {role === 'admin' && (
-              <NavLink to="/admin/users" className="text-slate-600 hover:text-slate-900">
-                Manage users
-              </NavLink>
-            )}
             <span className="text-slate-600">
               {user?.email} <span className="text-slate-400">· {role ? roleLabel(role) : 'no role'}</span>
             </span>
@@ -41,7 +41,7 @@ export function Layout() {
           </div>
         </div>
         <nav className="mx-auto max-w-7xl px-4 flex gap-1 overflow-x-auto">
-          {NAV_ITEMS.map((item) => (
+          {[...NAV_ITEMS, ...(role === 'admin' ? [ADMIN_ITEM] : [])].map((item) => (
             <NavLink
               key={item.to}
               to={item.to}

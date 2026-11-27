@@ -10,6 +10,11 @@ import { DeviceShipmentsPage } from './pages/DeviceShipmentsPage'
 import { SimulationPage } from './pages/SimulationPage'
 import { ReportingPage } from './pages/ReportingPage'
 import { AdminUsersPage } from './pages/AdminUsersPage'
+import { PipelinePage } from './pages/PipelinePage'
+import { KnowledgebasePage } from './pages/KnowledgebasePage'
+import { AdminLayout } from './pages/admin/AdminLayout'
+import { AuditTrailPage } from './pages/admin/AuditTrailPage'
+import { BackupPage } from './pages/admin/BackupPage'
 
 export default function App() {
   return (
@@ -29,14 +34,21 @@ export default function App() {
         <Route path="device-shipments" element={<DeviceShipmentsPage />} />
         <Route path="simulation" element={<SimulationPage />} />
         <Route path="reporting" element={<ReportingPage />} />
+        <Route path="pipeline" element={<PipelinePage />} />
+        <Route path="knowledgebase/*" element={<KnowledgebasePage />} />
         <Route
-          path="admin/users"
+          path="admin"
           element={
             <ProtectedRoute allow={['admin']}>
-              <AdminUsersPage />
+              <AdminLayout />
             </ProtectedRoute>
           }
-        />
+        >
+          <Route index element={<Navigate to="users" replace />} />
+          <Route path="users" element={<AdminUsersPage />} />
+          <Route path="audit" element={<AuditTrailPage />} />
+          <Route path="backup" element={<BackupPage />} />
+        </Route>
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

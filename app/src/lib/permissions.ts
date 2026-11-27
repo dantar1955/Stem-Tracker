@@ -61,3 +61,8 @@ export function roleLabel(role: AppRole): string {
       return 'Accounting'
   }
 }
+
+/** Pipeline entries and yearly goals: Sales and Admin edit, everyone else views. */
+export function canEditPipeline(role: AppRole | null): boolean {
+  return role === 'sales' || role === 'admin'
+}

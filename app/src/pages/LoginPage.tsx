@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
 export function LoginPage() {
-  const { user, loading, signInWithPassword } = useAuth()
+  const { user, loading, signInWithPassword, notice } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -50,7 +50,7 @@ export function LoginPage() {
           />
         </label>
 
-        {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+        {(error ?? notice) && <p className="mt-3 text-sm text-red-600">{error ?? notice}</p>}
 
         <button
           type="submit"

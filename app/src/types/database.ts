@@ -178,3 +178,62 @@ export interface DashboardSummaryRow {
   scheduled_count: number
   at_risk_count: number
 }
+
+export type PipelineStage = 'pipeline' | 'awaiting_po' | 'po_received' | 'lost'
+
+export interface PipelineEntry {
+  id: string
+  opportunity: string
+  stage: PipelineStage
+  likelihood: OpportunityLikelihood | null
+  labs_qty: number
+  ts_qty: number
+  estimated_revenue: number | null
+  expected_po_date: string | null
+  production_year: number
+  owner: string | null
+  notes: string | null
+  created_by: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface PipelineSummaryRow {
+  production_year: number
+  pipeline_total: number | null
+  pipeline_count: number
+  awaiting_po_total: number | null
+  awaiting_po_count: number
+}
+
+export interface YearGoals {
+  production_year: number
+  revenue_goal: number | null
+  in_our_control_target: number | null
+}
+
+export interface AuditLogEntry {
+  id: number
+  occurred_at: string
+  actor_id: string | null
+  actor_email: string | null
+  actor_name: string | null
+  source: 'app' | 'netsuite_sync' | 'system' | 'database'
+  action: string
+  table_name: string | null
+  record_id: string | null
+  record_label: string | null
+  changes: Record<string, unknown> | null
+  details: Record<string, unknown> | null
+}
+
+export interface AdminUser {
+  id: string
+  email: string
+  full_name: string | null
+  role: AppRole | null
+  suspended: boolean
+  must_change_password: boolean
+  last_sign_in_at: string | null
+  created_at: string
+}
