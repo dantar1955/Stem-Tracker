@@ -37,4 +37,6 @@ as $$ select nullif(current_setting('request.jwt.uid', true), '')::uuid; $$;
 
 create or replace function auth.role() returns text
 language sql stable
-as $$ select coalesce(nullif(current_setting('request.jwt.role', true), ''), 'anon'); $$;
+-- Mirrors real Supabase: NULL when there is no JWT (a direct database
+-- session such as the SQL Editor), not 'anon'.
+as $$ select nullif(current_setting('request.jwt.role', true), ''); $$;

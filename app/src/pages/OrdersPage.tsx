@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
 import { formatCurrency, formatDate } from '../lib/format'
 import { OrderEditForm } from '../components/OrderEditForm'
+import { LEGEND_ORDER, ORDER_COLORS, orderColorKey } from '../lib/orderColors'
 import type { OrderComputed } from '../types/database'
 
 const CURRENT_YEAR = new Date().getFullYear()
@@ -12,6 +13,7 @@ export function OrdersPage() {
   const [error, setError] = useState<string | null>(null)
   const [year, setYear] = useState(CURRENT_YEAR)
   const [search, setSearch] = useState('')
+  const [showAll, setShowAll] = useState(false)
   const [selected, setSelected] = useState<OrderComputed | null>(null)
 
   async function load() {
@@ -22,8 +24,13 @@ export function OrdersPage() {
       .eq('production_year', year)
       .order('order_date', { ascending: false })
 
+    if (!showAll) {
+      query = query.eq('in_production', true)
+    }
+
     if (search.trim()) {
-      query = query.ilike('school', `%${search.trim()}%`)
+      const term = search.trim().replace(/[,()]/g, ' ')
+      query = query.or(`school.ilike.%${term}%,so_number.ilike.%${term}%`)
     }
 
     const { data, error } = await query
@@ -38,7 +45,7 @@ export function OrdersPage() {
   useEffect(() => {
     load()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [year])
+  }, [year, showAll])
 
   return (
     <div>
@@ -56,7 +63,7 @@ export function OrdersPage() {
           ))}
         </select>
         <input
-          placeholder="Search school…"
+          placeholder="Search school or S/O #…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && load()}
@@ -65,7 +72,20 @@ export function OrdersPage() {
         <button onClick={load} className="rounded-md border border-slate-300 px-3 py-1 text-sm hover:bg-slate-100">
           Search
         </button>
+        <label className="flex items-center gap-2 text-sm text-slate-700">
+          <input type="checkbox" checked={showAll} onChange={(e) => setShowAll(e.target.checked)} />
+          Show all orders (incl. non-lab, e.g. SnappyXO)
+        </label>
         <span className="ml-auto text-sm text-slate-500">{orders.length} orders</span>
+      </div>
+
+      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-600">
+        {LEGEND_ORDER.map((key) => (
+          <span key={key} className="flex items-center gap-1.5" title={ORDER_COLORS[key].description}>
+            <span className={`inline-block h-3 w-3 rounded-sm border ${ORDER_COLORS[key].swatch}`} />
+            {ORDER_COLORS[key].label}
+          </span>
+        ))}
       </div>
 
       {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
@@ -74,6 +94,7 @@ export function OrdersPage() {
         <table className="min-w-full divide-y divide-slate-200 text-sm">
           <thead className="bg-slate-50 text-xs uppercase text-slate-500">
             <tr>
+              <th className="px-3 py-2 text-left">S/O #</th>
               <th className="px-3 py-2 text-left">School</th>
               <th className="px-3 py-2 text-left">PCS Rec</th>
               <th className="px-3 py-2 text-left">Revenue</th>
@@ -87,13 +108,13 @@ export function OrdersPage() {
           <tbody className="divide-y divide-slate-100">
             {loading ? (
               <tr>
-                <td colSpan={8} className="px-3 py-6 text-center text-slate-400">
+                <td colSpan={9} className="px-3 py-6 text-center text-slate-400">
                   Loading…
                 </td>
               </tr>
             ) : orders.length === 0 ? (
               <tr>
-                <td colSpan={8} className="px-3 py-6 text-center text-slate-400">
+                <td colSpan={9} className="px-3 py-6 text-center text-slate-400">
                   No orders found for {year}.
                 </td>
               </tr>
@@ -102,9 +123,18 @@ export function OrdersPage() {
                 <tr
                   key={order.id}
                   onClick={() => setSelected(order)}
-                  className="cursor-pointer hover:bg-slate-50"
+                  className={`cursor-pointer ${ORDER_COLORS[orderColorKey(order)].row}`}
+                  title={ORDER_COLORS[orderColorKey(order)].label}
                 >
-                  <td className="px-3 py-2 font-medium text-slate-900">{order.school}</td>
+                  <td className="whitespace-nowrap px-3 py-2 text-slate-700">{order.so_number ?? '—'}</td>
+                  <td className="px-3 py-2 font-medium text-slate-900">
+                    {order.school}
+                    {!order.in_production && (
+                      <span className="ml-2 rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-normal uppercase text-slate-500">
+                        Non-lab
+                      </span>
+                    )}
+                  </td>
                   <td className="px-3 py-2">{formatDate(order.pcs_received)}</td>
                   <td className="px-3 py-2">{formatCurrency(order.revenue)}</td>
                   <td className="px-3 py-2">{formatDate(order.ship_date)}</td>

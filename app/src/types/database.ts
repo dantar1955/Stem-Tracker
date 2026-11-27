@@ -54,6 +54,7 @@ export interface Order {
   notes: string | null
   legacy_status_text: string | null
   production_year: number
+  tracked_in_sheet: boolean
   created_at: string
   updated_at: string
 }
@@ -64,6 +65,9 @@ export interface OrderComputed extends Order {
   is_billed: boolean
   is_paid: boolean
   is_scheduled: boolean
+  // Lab / teacher-station order, or one carried over from the spreadsheet.
+  // Non-production orders (SnappyXO, iPad-only, ...) are hidden by default.
+  in_production: boolean
 }
 
 export interface Build {
@@ -155,6 +159,7 @@ export interface WeeklySnapshot {
 
 export interface DashboardSummaryRow {
   production_year: number
+  in_production: boolean
   shipped_revenue: number | null
   billed_revenue: number | null
   paid_revenue: number | null

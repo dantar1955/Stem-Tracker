@@ -6,8 +6,34 @@ import type { DashboardSummaryRow, WeeklySnapshot } from '../types/database'
 
 const CURRENT_YEAR = new Date().getFullYear()
 
+const SUM_FIELDS = [
+  'shipped_revenue',
+  'billed_revenue',
+  'paid_revenue',
+  'shipped_not_billed_revenue',
+  'unshipped_revenue',
+  'scheduled_not_shipped_revenue',
+  'not_yet_scheduled_revenue',
+  'delivering_without_devices_revenue',
+  'order_count',
+] as const
+
+// The summary view has one row for production orders and one for the rest.
+// Add up the rows that are in scope.
+function combine(rows: DashboardSummaryRow[], includeAll: boolean): DashboardSummaryRow | null {
+  const inScope = rows.filter((r) => includeAll || r.in_production)
+  if (inScope.length === 0) return null
+  const total = { ...inScope[0] }
+  for (const field of SUM_FIELDS) {
+    const values = inScope.map((r) => r[field]).filter((v): v is number => v != null)
+    ;(total as Record<string, unknown>)[field] = values.length ? values.reduce((a, b) => a + Number(b), 0) : null
+  }
+  return total
+}
+
 export function DashboardPage() {
-  const [summary, setSummary] = useState<DashboardSummaryRow | null>(null)
+  const [summaryRows, setSummaryRows] = useState<DashboardSummaryRow[]>([])
+  const [includeAll, setIncludeAll] = useState(false)
   const [snapshot, setSnapshot] = useState<WeeklySnapshot | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -18,14 +44,14 @@ export function DashboardPage() {
     async function load() {
       setLoading(true)
       const [summaryRes, snapshotRes] = await Promise.all([
-        supabase.from('v_dashboard_summary').select('*').eq('production_year', CURRENT_YEAR).maybeSingle(),
+        supabase.from('v_dashboard_summary').select('*').eq('production_year', CURRENT_YEAR),
         supabase.from('weekly_snapshots').select('*').order('snapshot_date', { ascending: false }).limit(1).maybeSingle(),
       ])
 
       if (!mounted) return
 
       if (summaryRes.error) setError(summaryRes.error.message)
-      else setSummary(summaryRes.data as DashboardSummaryRow | null)
+      else setSummaryRows((summaryRes.data as DashboardSummaryRow[] | null) ?? [])
 
       if (!snapshotRes.error) setSnapshot(snapshotRes.data as WeeklySnapshot | null)
 
@@ -41,6 +67,7 @@ export function DashboardPage() {
   if (loading) return <div className="text-slate-500">Loading dashboard…</div>
   if (error) return <div className="text-red-600">Failed to load dashboard: {error}</div>
 
+  const summary = combine(summaryRows, includeAll)
   const goal = snapshot?.revenue_goal ?? null
   const inControl = snapshot?.in_our_control_target ?? null
   const committed = (summary?.shipped_revenue ?? 0) + (summary?.unshipped_revenue ?? 0)
@@ -48,6 +75,11 @@ export function DashboardPage() {
 
   return (
     <div className="space-y-8">
+      <label className="flex items-center gap-2 text-sm text-slate-700">
+        <input type="checkbox" checked={includeAll} onChange={(e) => setIncludeAll(e.target.checked)} />
+        Include all orders (non-lab orders such as SnappyXO are left out by default)
+      </label>
+
       <section>
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
           {CURRENT_YEAR} story — projections

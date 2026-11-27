@@ -33,6 +33,7 @@ const ORDER_FIELD_OWNERS: Record<keyof Order, AppRole[] | 'netsuite' | 'shared'>
   notes: 'shared',
   legacy_status_text: 'netsuite',
   production_year: 'netsuite',
+  tracked_in_sheet: 'netsuite',
   created_at: 'netsuite',
   updated_at: 'netsuite',
 }
