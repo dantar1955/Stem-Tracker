@@ -7,15 +7,15 @@ export function formatCurrency(value: number | null | undefined): string {
 
 import type { BillingStatus } from '../types/database'
 
-// Billing steps in the order they happen. An order counts as billed once it
-// has been submitted to the DOE portal (Submitted, On hold or Paid).
-export const BILLING_STATUS_ORDER: BillingStatus[] = ['not_submitted', 'fulfilled', 'submitted', 'on_hold', 'paid']
+// Billing statuses, matching the STEM STATUS sheet's dashboard:
+// billed = Submitted, On hold, Fulfilled or Paid; paid = Fulfilled or Paid.
+export const BILLING_STATUS_ORDER: BillingStatus[] = ['not_submitted', 'submitted', 'on_hold', 'fulfilled', 'paid']
 
 export const BILLING_STATUS_LABELS: Record<BillingStatus, string> = {
   not_submitted: 'Not submitted',
-  fulfilled: 'Fulfilled – ready to submit',
   submitted: 'Submitted to DOE portal',
   on_hold: 'Submitted – on hold',
+  fulfilled: 'Fulfilled',
   paid: 'Paid',
 }
 

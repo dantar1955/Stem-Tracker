@@ -163,6 +163,15 @@ export function OrderEditForm({ order, onSaved, onClose }: { order: Order; onSav
               <TextField label="Email" value={draft.email ?? ''} editable={editable('email')} onChange={(v) => set('email', v)} />
               <TextField label="Elevator/Steps" value={draft.elevator_steps ?? ''} editable={editable('elevator_steps')} onChange={(v) => set('elevator_steps', v)} />
               <TextField label="On order" value={draft.on_order_notes ?? ''} editable={editable('on_order_notes')} onChange={(v) => set('on_order_notes', v)} />
+              <label className="col-span-2 flex items-center gap-2 text-sm text-slate-700">
+                <input
+                  type="checkbox"
+                  checked={draft.at_risk}
+                  disabled={!editable('at_risk')}
+                  onChange={(e) => set('at_risk', e.target.checked)}
+                />
+                At risk (left out of the dashboard totals and shown separately)
+              </label>
             </div>
           </div>
 

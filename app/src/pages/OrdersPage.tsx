@@ -129,6 +129,11 @@ export function OrdersPage() {
                   <td className="whitespace-nowrap px-3 py-2 text-slate-700">{order.so_number ?? '—'}</td>
                   <td className="px-3 py-2 font-medium text-slate-900">
                     {order.school}
+                    {order.at_risk && (
+                      <span className="ml-2 rounded bg-red-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase text-red-700">
+                        At risk
+                      </span>
+                    )}
                     {!order.in_production && (
                       <span className="ml-2 rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-normal uppercase text-slate-500">
                         Non-lab

@@ -55,6 +55,7 @@ export interface Order {
   legacy_status_text: string | null
   production_year: number
   tracked_in_sheet: boolean
+  at_risk: boolean
   created_at: string
   updated_at: string
 }
@@ -168,5 +169,12 @@ export interface DashboardSummaryRow {
   scheduled_not_shipped_revenue: number | null
   not_yet_scheduled_revenue: number | null
   delivering_without_devices_revenue: number | null
+  awaiting_payment_revenue: number | null
+  at_risk_revenue: number | null
   order_count: number
+  shipped_count: number
+  billed_count: number
+  paid_count: number
+  scheduled_count: number
+  at_risk_count: number
 }

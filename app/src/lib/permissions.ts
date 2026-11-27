@@ -34,6 +34,7 @@ const ORDER_FIELD_OWNERS: Record<keyof Order, AppRole[] | 'netsuite' | 'shared'>
   legacy_status_text: 'netsuite',
   production_year: 'netsuite',
   tracked_in_sheet: 'netsuite',
+  at_risk: ['operations'],
   created_at: 'netsuite',
   updated_at: 'netsuite',
 }

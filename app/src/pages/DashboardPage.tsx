@@ -15,7 +15,14 @@ const SUM_FIELDS = [
   'scheduled_not_shipped_revenue',
   'not_yet_scheduled_revenue',
   'delivering_without_devices_revenue',
+  'awaiting_payment_revenue',
+  'at_risk_revenue',
   'order_count',
+  'shipped_count',
+  'billed_count',
+  'paid_count',
+  'scheduled_count',
+  'at_risk_count',
 ] as const
 
 // The summary view has one row for production orders and one for the rest.
@@ -100,19 +107,31 @@ export function DashboardPage() {
       <section>
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Where we are</h2>
         <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <StatCard label="Shipped" value={formatCurrency(summary?.shipped_revenue)} />
+          <StatCard
+            label="Shipped YTD"
+            value={formatCurrency(summary?.shipped_revenue)}
+            sublabel={`${summary?.shipped_count ?? 0} orders shipped`}
+          />
           <StatCard
             label="Billed"
             value={formatCurrency(summary?.billed_revenue)}
-            sublabel="Submitted to DOE portal (incl. on hold) or paid"
+            sublabel={`${summary?.billed_count ?? 0} orders · fulfilled, paid or submitted`}
           />
-          <StatCard label="Paid" value={formatCurrency(summary?.paid_revenue)} />
+          <StatCard
+            label="Paid"
+            value={formatCurrency(summary?.paid_revenue)}
+            sublabel={`${summary?.paid_count ?? 0} orders · ${formatCurrency(summary?.awaiting_payment_revenue)} awaiting payment`}
+          />
           <StatCard
             label="Collected %"
-            value={formatPercent(summary?.paid_revenue, summary?.billed_revenue)}
-            sublabel="Paid ÷ billed"
+            value={formatPercent(summary?.paid_revenue, summary?.shipped_revenue)}
+            sublabel="of shipped $ paid"
           />
-          <StatCard label="Shipped, not billed" value={formatCurrency(summary?.shipped_not_billed_revenue)} />
+          <StatCard
+            label="Shipped, not billed"
+            value={formatCurrency(summary?.shipped_not_billed_revenue)}
+            sublabel="invoice these"
+          />
           <StatCard label="Unshipped" value={formatCurrency(summary?.unshipped_revenue)} />
         </div>
       </section>
@@ -121,9 +140,22 @@ export function DashboardPage() {
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">
           On a PO, not yet shipped
         </h2>
-        <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <StatCard label="Scheduled" value={formatCurrency(summary?.scheduled_not_shipped_revenue)} />
-          <StatCard label="Not yet scheduled" value={formatCurrency(summary?.not_yet_scheduled_revenue)} />
+        <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <StatCard
+            label="Scheduled to ship"
+            value={formatCurrency(summary?.scheduled_not_shipped_revenue)}
+            sublabel={`${summary?.scheduled_count ?? 0} orders · has a bill month`}
+          />
+          <StatCard
+            label="Not yet scheduled"
+            value={formatCurrency(summary?.not_yet_scheduled_revenue)}
+            sublabel="no bill month"
+          />
+          <StatCard
+            label="At risk"
+            value={formatCurrency(summary?.at_risk_revenue)}
+            sublabel={`${summary?.at_risk_count ?? 0} orders · not in the totals above`}
+          />
           <StatCard
             label="Awaiting PO (last snapshot)"
             value={formatCurrency(snapshot?.awaiting_po_total)}
