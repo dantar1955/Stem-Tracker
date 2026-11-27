@@ -101,7 +101,11 @@ export function DashboardPage() {
         <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-500">Where we are</h2>
         <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard label="Shipped" value={formatCurrency(summary?.shipped_revenue)} />
-          <StatCard label="Billed" value={formatCurrency(summary?.billed_revenue)} />
+          <StatCard
+            label="Billed"
+            value={formatCurrency(summary?.billed_revenue)}
+            sublabel="Submitted to DOE portal (incl. on hold) or paid"
+          />
           <StatCard label="Paid" value={formatCurrency(summary?.paid_revenue)} />
           <StatCard
             label="Collected %"

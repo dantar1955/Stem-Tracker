@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '../lib/supabaseClient'
-import { formatCurrency, formatDate } from '../lib/format'
+import { BILLING_STATUS_LABELS, formatCurrency, formatDate } from '../lib/format'
 import { OrderEditForm } from '../components/OrderEditForm'
 import { LEGEND_ORDER, ORDER_COLORS, orderColorKey } from '../lib/orderColors'
 import type { OrderComputed } from '../types/database'
@@ -138,7 +138,7 @@ export function OrdersPage() {
                   <td className="px-3 py-2">{formatDate(order.pcs_received)}</td>
                   <td className="px-3 py-2">{formatCurrency(order.revenue)}</td>
                   <td className="px-3 py-2">{formatDate(order.ship_date)}</td>
-                  <td className="px-3 py-2 capitalize">{order.billing_status.replace(/_/g, ' ')}</td>
+                  <td className="px-3 py-2">{BILLING_STATUS_LABELS[order.billing_status]}</td>
                   <td className="px-3 py-2">{formatDate(order.bill_month)}</td>
                   <td className="px-3 py-2">{formatDate(order.install_date)}</td>
                   <td className="px-3 py-2">

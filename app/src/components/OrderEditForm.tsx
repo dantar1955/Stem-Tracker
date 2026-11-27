@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { canEditOrderField } from '../lib/permissions'
+import { BILLING_STATUS_LABELS, BILLING_STATUS_ORDER } from '../lib/format'
 import { supabase } from '../lib/supabaseClient'
-import type { BillingStatus, InstallStatus, Order, OrderStatus } from '../types/database'
+import type { InstallStatus, Order, OrderStatus } from '../types/database'
 
-const BILLING_STATUSES: BillingStatus[] = ['not_submitted', 'submitted', 'fulfilled', 'paid', 'on_hold']
 const INSTALL_STATUSES: InstallStatus[] = ['not_installed', 'installed']
 const ORDER_STATUSES: OrderStatus[] = [
   'new',
@@ -48,12 +48,14 @@ function SelectField<T extends string>({
   options,
   editable,
   onChange,
+  labels,
 }: {
   label: string
   value: T
   options: T[]
   editable: boolean
   onChange: (v: T) => void
+  labels?: Record<T, string>
 }) {
   return (
     <label className="block text-sm">
@@ -66,7 +68,7 @@ function SelectField<T extends string>({
       >
         {options.map((o) => (
           <option key={o} value={o}>
-            {o.replace(/_/g, ' ')}
+            {labels?.[o] ?? o.replace(/_/g, ' ')}
           </option>
         ))}
       </select>
@@ -167,7 +169,7 @@ export function OrderEditForm({ order, onSaved, onClose }: { order: Order; onSav
           <div className="rounded-md border border-slate-200 p-3">
             <p className="mb-2 text-xs font-semibold uppercase text-slate-400">Accounting</p>
             <div className="grid grid-cols-2 gap-2">
-              <SelectField label="Billing status" value={draft.billing_status} options={BILLING_STATUSES} editable={editable('billing_status')} onChange={(v) => set('billing_status', v)} />
+              <SelectField label="Billing status" value={draft.billing_status} options={BILLING_STATUS_ORDER} labels={BILLING_STATUS_LABELS} editable={editable('billing_status')} onChange={(v) => set('billing_status', v)} />
               <TextField label="Bill month" value={draft.bill_month ?? ''} editable={editable('bill_month')} onChange={(v) => set('bill_month', v)} type="date" />
             </div>
           </div>
